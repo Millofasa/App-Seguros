@@ -1,0 +1,4 @@
+Pasos para la aplicacion.
+
+1.Ejecutar el script Seguros-Falabella
+2. Abrir la solucion CrudSeguros.

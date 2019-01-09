@@ -1,0 +1,11 @@
+﻿@model IEnumerable<Entidades.TipoItem>
+
+<select id="ddlTipoItem" class="form-control">
+    @if (Model != null)
+    {
+        foreach (var item in Model)
+        {
+            <option value="@item.IdTipoItem">@item.Descripcion</option>
+        }
+    }
+</select>

@@ -1,0 +1,667 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="SegurosModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Asesor">
+          <Key>
+            <PropertyRef Name="IdAsesor" />
+          </Key>
+          <Property Name="IdAsesor" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nombre" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Cliente">
+          <Key>
+            <PropertyRef Name="IdCliente" />
+          </Key>
+          <Property Name="IdCliente" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nombre" Type="varchar" MaxLength="50" />
+          <Property Name="Documento" Type="varchar" MaxLength="50" />
+          <Property Name="Correo" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Compania">
+          <Key>
+            <PropertyRef Name="IdCompania" />
+          </Key>
+          <Property Name="IdCompania" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nombre" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Estado" Type="bit" />
+        </EntityType>
+        <EntityType Name="EstadoVenta">
+          <Key>
+            <PropertyRef Name="IdEstado" />
+          </Key>
+          <Property Name="IdEstado" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Descripcion" Type="varchar" MaxLength="20" />
+        </EntityType>
+        <EntityType Name="ItemProducto">
+          <Key>
+            <PropertyRef Name="IdItemProducto" />
+          </Key>
+          <Property Name="IdItemProducto" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Descripcion" Type="text" />
+          <Property Name="IdTipoItem" Type="int" Nullable="false" />
+          <Property Name="IdProducto" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Producto">
+          <Key>
+            <PropertyRef Name="IdProducto" />
+          </Key>
+          <Property Name="IdProducto" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nombre" Type="varchar" MaxLength="50" />
+          <Property Name="Descripcion" Type="text" />
+          <Property Name="IdCompania" Type="int" Nullable="false" />
+          <Property Name="IdAsesor" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <EntityType Name="TipoItem">
+          <Key>
+            <PropertyRef Name="IdTipoItem" />
+          </Key>
+          <Property Name="IdTipoItem" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Descripcion" Type="varchar" MaxLength="30" />
+        </EntityType>
+        <EntityType Name="Venta">
+          <Key>
+            <PropertyRef Name="IdVenta" />
+          </Key>
+          <Property Name="IdVenta" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FechaCreacion" Type="date" Nullable="false" />
+          <Property Name="IdCliente" Type="int" Nullable="false" />
+          <Property Name="IdProducto" Type="int" Nullable="false" />
+          <Property Name="IdEstado" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="VentaProducto">
+          <Key>
+            <PropertyRef Name="IdVentaProducto" />
+          </Key>
+          <Property Name="IdVentaProducto" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IdVenta" Type="int" Nullable="false" />
+          <Property Name="IdProducto" Type="int" Nullable="false" />
+        </EntityType>
+        <!--Errores durante la generación:
+advertencia 6002: La tabla o vista 'Seguros.dbo.V_ListaProductos' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+        <EntityType Name="V_ListaProductos">
+          <Key>
+            <PropertyRef Name="IdProducto" />
+            <PropertyRef Name="IdCompania" />
+            <PropertyRef Name="IdAsesor" />
+            <PropertyRef Name="NombreCompania" />
+          </Key>
+          <Property Name="IdProducto" Type="int" Nullable="false" />
+          <Property Name="Nombre" Type="varchar" MaxLength="50" />
+          <Property Name="Descripcion" Type="text" />
+          <Property Name="IdCompania" Type="int" Nullable="false" />
+          <Property Name="IdAsesor" Type="int" Nullable="false" />
+          <Property Name="NombreCompania" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Asesor" Type="varchar" MaxLength="50" />
+          <Property Name="DescripcionItem" Type="text" />
+          <Property Name="TipoItem" Type="varchar" MaxLength="30" />
+        </EntityType>
+        <Association Name="FK_ItemProducto_Producto">
+          <End Role="Producto" Type="Self.Producto" Multiplicity="1" />
+          <End Role="ItemProducto" Type="Self.ItemProducto" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Producto">
+              <PropertyRef Name="IdProducto" />
+            </Principal>
+            <Dependent Role="ItemProducto">
+              <PropertyRef Name="IdProducto" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ItemProducto_TipoItem">
+          <End Role="TipoItem" Type="Self.TipoItem" Multiplicity="1" />
+          <End Role="ItemProducto" Type="Self.ItemProducto" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TipoItem">
+              <PropertyRef Name="IdTipoItem" />
+            </Principal>
+            <Dependent Role="ItemProducto">
+              <PropertyRef Name="IdTipoItem" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Producto_Asesor">
+          <End Role="Asesor" Type="Self.Asesor" Multiplicity="1" />
+          <End Role="Producto" Type="Self.Producto" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Asesor">
+              <PropertyRef Name="IdAsesor" />
+            </Principal>
+            <Dependent Role="Producto">
+              <PropertyRef Name="IdAsesor" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Producto_Compania">
+          <End Role="Compania" Type="Self.Compania" Multiplicity="1" />
+          <End Role="Producto" Type="Self.Producto" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Compania">
+              <PropertyRef Name="IdCompania" />
+            </Principal>
+            <Dependent Role="Producto">
+              <PropertyRef Name="IdCompania" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Venta_Cliente">
+          <End Role="Cliente" Type="Self.Cliente" Multiplicity="1" />
+          <End Role="Venta" Type="Self.Venta" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cliente">
+              <PropertyRef Name="IdCliente" />
+            </Principal>
+            <Dependent Role="Venta">
+              <PropertyRef Name="IdCliente" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Venta_EstadoVenta">
+          <End Role="EstadoVenta" Type="Self.EstadoVenta" Multiplicity="1" />
+          <End Role="Venta" Type="Self.Venta" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EstadoVenta">
+              <PropertyRef Name="IdEstado" />
+            </Principal>
+            <Dependent Role="Venta">
+              <PropertyRef Name="IdEstado" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_VentaProducto_Producto">
+          <End Role="Producto" Type="Self.Producto" Multiplicity="1" />
+          <End Role="VentaProducto" Type="Self.VentaProducto" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Producto">
+              <PropertyRef Name="IdProducto" />
+            </Principal>
+            <Dependent Role="VentaProducto">
+              <PropertyRef Name="IdProducto" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_VentaProducto_Venta">
+          <End Role="Venta" Type="Self.Venta" Multiplicity="1" />
+          <End Role="VentaProducto" Type="Self.VentaProducto" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Venta">
+              <PropertyRef Name="IdVenta" />
+            </Principal>
+            <Dependent Role="VentaProducto">
+              <PropertyRef Name="IdVenta" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="SegurosModelStoreContainer">
+          <EntitySet Name="Asesor" EntityType="Self.Asesor" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Cliente" EntityType="Self.Cliente" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Compania" EntityType="Self.Compania" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="EstadoVenta" EntityType="Self.EstadoVenta" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ItemProducto" EntityType="Self.ItemProducto" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Producto" EntityType="Self.Producto" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TipoItem" EntityType="Self.TipoItem" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Venta" EntityType="Self.Venta" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="VentaProducto" EntityType="Self.VentaProducto" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="V_ListaProductos" EntityType="Self.V_ListaProductos" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [V_ListaProductos].[IdProducto] AS [IdProducto], 
+    [V_ListaProductos].[Nombre] AS [Nombre], 
+    [V_ListaProductos].[Descripcion] AS [Descripcion], 
+    [V_ListaProductos].[IdCompania] AS [IdCompania], 
+    [V_ListaProductos].[IdAsesor] AS [IdAsesor], 
+    [V_ListaProductos].[NombreCompania] AS [NombreCompania], 
+    [V_ListaProductos].[Asesor] AS [Asesor], 
+    [V_ListaProductos].[DescripcionItem] AS [DescripcionItem], 
+    [V_ListaProductos].[TipoItem] AS [TipoItem]
+    FROM [dbo].[V_ListaProductos] AS [V_ListaProductos]</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="FK_ItemProducto_Producto" Association="Self.FK_ItemProducto_Producto">
+            <End Role="Producto" EntitySet="Producto" />
+            <End Role="ItemProducto" EntitySet="ItemProducto" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ItemProducto_TipoItem" Association="Self.FK_ItemProducto_TipoItem">
+            <End Role="TipoItem" EntitySet="TipoItem" />
+            <End Role="ItemProducto" EntitySet="ItemProducto" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Producto_Asesor" Association="Self.FK_Producto_Asesor">
+            <End Role="Asesor" EntitySet="Asesor" />
+            <End Role="Producto" EntitySet="Producto" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Producto_Compania" Association="Self.FK_Producto_Compania">
+            <End Role="Compania" EntitySet="Compania" />
+            <End Role="Producto" EntitySet="Producto" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Venta_Cliente" Association="Self.FK_Venta_Cliente">
+            <End Role="Cliente" EntitySet="Cliente" />
+            <End Role="Venta" EntitySet="Venta" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Venta_EstadoVenta" Association="Self.FK_Venta_EstadoVenta">
+            <End Role="EstadoVenta" EntitySet="EstadoVenta" />
+            <End Role="Venta" EntitySet="Venta" />
+          </AssociationSet>
+          <AssociationSet Name="FK_VentaProducto_Producto" Association="Self.FK_VentaProducto_Producto">
+            <End Role="Producto" EntitySet="Producto" />
+            <End Role="VentaProducto" EntitySet="VentaProducto" />
+          </AssociationSet>
+          <AssociationSet Name="FK_VentaProducto_Venta" Association="Self.FK_VentaProducto_Venta">
+            <End Role="Venta" EntitySet="Venta" />
+            <End Role="VentaProducto" EntitySet="VentaProducto" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="SegurosModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Asesor">
+          <Key>
+            <PropertyRef Name="IdAsesor" />
+          </Key>
+          <Property Name="IdAsesor" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Producto" Relationship="Self.FK_Producto_Asesor" FromRole="Asesor" ToRole="Producto" />
+        </EntityType>
+        <EntityType Name="Cliente">
+          <Key>
+            <PropertyRef Name="IdCliente" />
+          </Key>
+          <Property Name="IdCliente" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Documento" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Correo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Venta" Relationship="Self.FK_Venta_Cliente" FromRole="Cliente" ToRole="Venta" />
+        </EntityType>
+        <EntityType Name="Compania">
+          <Key>
+            <PropertyRef Name="IdCompania" />
+          </Key>
+          <Property Name="IdCompania" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Producto" Relationship="Self.FK_Producto_Compania" FromRole="Compania" ToRole="Producto" />
+          <Property Name="Estado" Type="Boolean" />
+        </EntityType>
+        <EntityType Name="EstadoVenta">
+          <Key>
+            <PropertyRef Name="IdEstado" />
+          </Key>
+          <Property Name="IdEstado" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Descripcion" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Venta" Relationship="Self.FK_Venta_EstadoVenta" FromRole="EstadoVenta" ToRole="Venta" />
+        </EntityType>
+        <EntityType Name="ItemProducto">
+          <Key>
+            <PropertyRef Name="IdItemProducto" />
+          </Key>
+          <Property Name="IdItemProducto" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Descripcion" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="IdTipoItem" Type="Int32" Nullable="false" />
+          <Property Name="IdProducto" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Producto" Relationship="Self.FK_ItemProducto_Producto" FromRole="ItemProducto" ToRole="Producto" />
+          <NavigationProperty Name="TipoItem" Relationship="Self.FK_ItemProducto_TipoItem" FromRole="ItemProducto" ToRole="TipoItem" />
+        </EntityType>
+        <EntityType Name="Producto">
+          <Key>
+            <PropertyRef Name="IdProducto" />
+          </Key>
+          <Property Name="IdProducto" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Descripcion" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="IdCompania" Type="Int32" Nullable="false" />
+          <Property Name="IdAsesor" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Asesor" Relationship="Self.FK_Producto_Asesor" FromRole="Producto" ToRole="Asesor" />
+          <NavigationProperty Name="Compania" Relationship="Self.FK_Producto_Compania" FromRole="Producto" ToRole="Compania" />
+          <NavigationProperty Name="ItemProducto" Relationship="Self.FK_ItemProducto_Producto" FromRole="Producto" ToRole="ItemProducto" />
+          <NavigationProperty Name="VentaProducto" Relationship="Self.FK_VentaProducto_Producto" FromRole="Producto" ToRole="VentaProducto" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="TipoItem">
+          <Key>
+            <PropertyRef Name="IdTipoItem" />
+          </Key>
+          <Property Name="IdTipoItem" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Descripcion" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="ItemProducto" Relationship="Self.FK_ItemProducto_TipoItem" FromRole="TipoItem" ToRole="ItemProducto" />
+        </EntityType>
+        <EntityType Name="Venta">
+          <Key>
+            <PropertyRef Name="IdVenta" />
+          </Key>
+          <Property Name="IdVenta" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FechaCreacion" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="IdCliente" Type="Int32" Nullable="false" />
+          <Property Name="IdProducto" Type="Int32" Nullable="false" />
+          <Property Name="IdEstado" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Cliente" Relationship="Self.FK_Venta_Cliente" FromRole="Venta" ToRole="Cliente" />
+          <NavigationProperty Name="EstadoVenta" Relationship="Self.FK_Venta_EstadoVenta" FromRole="Venta" ToRole="EstadoVenta" />
+          <NavigationProperty Name="VentaProducto" Relationship="Self.FK_VentaProducto_Venta" FromRole="Venta" ToRole="VentaProducto" />
+        </EntityType>
+        <EntityType Name="VentaProducto">
+          <Key>
+            <PropertyRef Name="IdVentaProducto" />
+          </Key>
+          <Property Name="IdVentaProducto" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IdVenta" Type="Int32" Nullable="false" />
+          <Property Name="IdProducto" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Producto" Relationship="Self.FK_VentaProducto_Producto" FromRole="VentaProducto" ToRole="Producto" />
+          <NavigationProperty Name="Venta" Relationship="Self.FK_VentaProducto_Venta" FromRole="VentaProducto" ToRole="Venta" />
+        </EntityType>
+        <Association Name="FK_Producto_Asesor">
+          <End Role="Asesor" Type="Self.Asesor" Multiplicity="1" />
+          <End Role="Producto" Type="Self.Producto" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Asesor">
+              <PropertyRef Name="IdAsesor" />
+            </Principal>
+            <Dependent Role="Producto">
+              <PropertyRef Name="IdAsesor" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Venta_Cliente">
+          <End Role="Cliente" Type="Self.Cliente" Multiplicity="1" />
+          <End Role="Venta" Type="Self.Venta" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cliente">
+              <PropertyRef Name="IdCliente" />
+            </Principal>
+            <Dependent Role="Venta">
+              <PropertyRef Name="IdCliente" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Producto_Compania">
+          <End Role="Compania" Type="Self.Compania" Multiplicity="1" />
+          <End Role="Producto" Type="Self.Producto" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Compania">
+              <PropertyRef Name="IdCompania" />
+            </Principal>
+            <Dependent Role="Producto">
+              <PropertyRef Name="IdCompania" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Venta_EstadoVenta">
+          <End Role="EstadoVenta" Type="Self.EstadoVenta" Multiplicity="1" />
+          <End Role="Venta" Type="Self.Venta" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EstadoVenta">
+              <PropertyRef Name="IdEstado" />
+            </Principal>
+            <Dependent Role="Venta">
+              <PropertyRef Name="IdEstado" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ItemProducto_Producto">
+          <End Role="Producto" Type="Self.Producto" Multiplicity="1" />
+          <End Role="ItemProducto" Type="Self.ItemProducto" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Producto">
+              <PropertyRef Name="IdProducto" />
+            </Principal>
+            <Dependent Role="ItemProducto">
+              <PropertyRef Name="IdProducto" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ItemProducto_TipoItem">
+          <End Role="TipoItem" Type="Self.TipoItem" Multiplicity="1" />
+          <End Role="ItemProducto" Type="Self.ItemProducto" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TipoItem">
+              <PropertyRef Name="IdTipoItem" />
+            </Principal>
+            <Dependent Role="ItemProducto">
+              <PropertyRef Name="IdTipoItem" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_VentaProducto_Producto">
+          <End Role="Producto" Type="Self.Producto" Multiplicity="1" />
+          <End Role="VentaProducto" Type="Self.VentaProducto" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Producto">
+              <PropertyRef Name="IdProducto" />
+            </Principal>
+            <Dependent Role="VentaProducto">
+              <PropertyRef Name="IdProducto" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_VentaProducto_Venta">
+          <End Role="Venta" Type="Self.Venta" Multiplicity="1" />
+          <End Role="VentaProducto" Type="Self.VentaProducto" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Venta">
+              <PropertyRef Name="IdVenta" />
+            </Principal>
+            <Dependent Role="VentaProducto">
+              <PropertyRef Name="IdVenta" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="SegurosEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Asesor" EntityType="Self.Asesor" />
+          <EntitySet Name="Cliente" EntityType="Self.Cliente" />
+          <EntitySet Name="Compania" EntityType="Self.Compania" />
+          <EntitySet Name="EstadoVenta" EntityType="Self.EstadoVenta" />
+          <EntitySet Name="ItemProducto" EntityType="Self.ItemProducto" />
+          <EntitySet Name="Producto" EntityType="Self.Producto" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
+          <EntitySet Name="TipoItem" EntityType="Self.TipoItem" />
+          <EntitySet Name="Venta" EntityType="Self.Venta" />
+          <EntitySet Name="VentaProducto" EntityType="Self.VentaProducto" />
+          <AssociationSet Name="FK_Producto_Asesor" Association="Self.FK_Producto_Asesor">
+            <End Role="Asesor" EntitySet="Asesor" />
+            <End Role="Producto" EntitySet="Producto" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Venta_Cliente" Association="Self.FK_Venta_Cliente">
+            <End Role="Cliente" EntitySet="Cliente" />
+            <End Role="Venta" EntitySet="Venta" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Producto_Compania" Association="Self.FK_Producto_Compania">
+            <End Role="Compania" EntitySet="Compania" />
+            <End Role="Producto" EntitySet="Producto" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Venta_EstadoVenta" Association="Self.FK_Venta_EstadoVenta">
+            <End Role="EstadoVenta" EntitySet="EstadoVenta" />
+            <End Role="Venta" EntitySet="Venta" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ItemProducto_Producto" Association="Self.FK_ItemProducto_Producto">
+            <End Role="Producto" EntitySet="Producto" />
+            <End Role="ItemProducto" EntitySet="ItemProducto" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ItemProducto_TipoItem" Association="Self.FK_ItemProducto_TipoItem">
+            <End Role="TipoItem" EntitySet="TipoItem" />
+            <End Role="ItemProducto" EntitySet="ItemProducto" />
+          </AssociationSet>
+          <AssociationSet Name="FK_VentaProducto_Producto" Association="Self.FK_VentaProducto_Producto">
+            <End Role="Producto" EntitySet="Producto" />
+            <End Role="VentaProducto" EntitySet="VentaProducto" />
+          </AssociationSet>
+          <AssociationSet Name="FK_VentaProducto_Venta" Association="Self.FK_VentaProducto_Venta">
+            <End Role="Venta" EntitySet="Venta" />
+            <End Role="VentaProducto" EntitySet="VentaProducto" />
+          </AssociationSet>
+          <EntitySet Name="V_ListaProductos" EntityType="SegurosModel.V_ListaProductos" />
+        </EntityContainer>
+        <EntityType Name="V_ListaProductos">
+          <Key>
+            <PropertyRef Name="IdCompania" />
+            <PropertyRef Name="IdAsesor" />
+            <PropertyRef Name="NombreCompania" />
+            <PropertyRef Name="IdProducto" />
+          </Key>
+          <Property Name="Nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Descripcion" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="IdCompania" Type="Int32" Nullable="false" />
+          <Property Name="IdAsesor" Type="Int32" Nullable="false" />
+          <Property Name="NombreCompania" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Asesor" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="IdProducto" Type="Int32" Nullable="false" />
+          <Property Name="DescripcionItem" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="TipoItem" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+        </EntityType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="SegurosModelStoreContainer" CdmEntityContainer="SegurosEntities">
+          <EntitySetMapping Name="Asesor">
+            <EntityTypeMapping TypeName="SegurosModel.Asesor">
+              <MappingFragment StoreEntitySet="Asesor">
+                <ScalarProperty Name="IdAsesor" ColumnName="IdAsesor" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Cliente">
+            <EntityTypeMapping TypeName="SegurosModel.Cliente">
+              <MappingFragment StoreEntitySet="Cliente">
+                <ScalarProperty Name="IdCliente" ColumnName="IdCliente" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="Documento" ColumnName="Documento" />
+                <ScalarProperty Name="Correo" ColumnName="Correo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Compania">
+            <EntityTypeMapping TypeName="SegurosModel.Compania">
+              <MappingFragment StoreEntitySet="Compania">
+                <ScalarProperty Name="Estado" ColumnName="Estado" />
+                <ScalarProperty Name="IdCompania" ColumnName="IdCompania" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EstadoVenta">
+            <EntityTypeMapping TypeName="SegurosModel.EstadoVenta">
+              <MappingFragment StoreEntitySet="EstadoVenta">
+                <ScalarProperty Name="IdEstado" ColumnName="IdEstado" />
+                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ItemProducto">
+            <EntityTypeMapping TypeName="SegurosModel.ItemProducto">
+              <MappingFragment StoreEntitySet="ItemProducto">
+                <ScalarProperty Name="IdItemProducto" ColumnName="IdItemProducto" />
+                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+                <ScalarProperty Name="IdTipoItem" ColumnName="IdTipoItem" />
+                <ScalarProperty Name="IdProducto" ColumnName="IdProducto" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Producto">
+            <EntityTypeMapping TypeName="SegurosModel.Producto">
+              <MappingFragment StoreEntitySet="Producto">
+                <ScalarProperty Name="IdProducto" ColumnName="IdProducto" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+                <ScalarProperty Name="IdCompania" ColumnName="IdCompania" />
+                <ScalarProperty Name="IdAsesor" ColumnName="IdAsesor" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="SegurosModel.sysdiagrams">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TipoItem">
+            <EntityTypeMapping TypeName="SegurosModel.TipoItem">
+              <MappingFragment StoreEntitySet="TipoItem">
+                <ScalarProperty Name="IdTipoItem" ColumnName="IdTipoItem" />
+                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Venta">
+            <EntityTypeMapping TypeName="SegurosModel.Venta">
+              <MappingFragment StoreEntitySet="Venta">
+                <ScalarProperty Name="IdVenta" ColumnName="IdVenta" />
+                <ScalarProperty Name="FechaCreacion" ColumnName="FechaCreacion" />
+                <ScalarProperty Name="IdCliente" ColumnName="IdCliente" />
+                <ScalarProperty Name="IdProducto" ColumnName="IdProducto" />
+                <ScalarProperty Name="IdEstado" ColumnName="IdEstado" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="VentaProducto">
+            <EntityTypeMapping TypeName="SegurosModel.VentaProducto">
+              <MappingFragment StoreEntitySet="VentaProducto">
+                <ScalarProperty Name="IdVentaProducto" ColumnName="IdVentaProducto" />
+                <ScalarProperty Name="IdVenta" ColumnName="IdVenta" />
+                <ScalarProperty Name="IdProducto" ColumnName="IdProducto" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="V_ListaProductos">
+            <EntityTypeMapping TypeName="SegurosModel.V_ListaProductos">
+              <MappingFragment StoreEntitySet="V_ListaProductos">
+                <ScalarProperty Name="TipoItem" ColumnName="TipoItem" />
+                <ScalarProperty Name="DescripcionItem" ColumnName="DescripcionItem" />
+                <ScalarProperty Name="IdProducto" ColumnName="IdProducto" />
+                <ScalarProperty Name="Asesor" ColumnName="Asesor" />
+                <ScalarProperty Name="NombreCompania" ColumnName="NombreCompania" />
+                <ScalarProperty Name="IdAsesor" ColumnName="IdAsesor" />
+                <ScalarProperty Name="IdCompania" ColumnName="IdCompania" />
+                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Ninguno" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

@@ -1,0 +1,55 @@
+﻿@model IEnumerable<Entidades.Producto>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Nombre)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Descripcion)
+        </th>
+        <th>
+            Compañia
+        </th>
+        <th>
+            Asesor
+        </th>
+        <th></th>
+    </tr>
+    @if (Model != null)
+    {
+        foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Nombre)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Descripcion)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.Compania.Nombre)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Asesor.Nombre)
+                </td>
+
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.IdProducto }) |
+
+                    <button id="BtnItemProducto" class="btn-link" value='@item.IdProducto' onclick="AddItemProducto(this.value)">
+                        Agregar Items
+                        <span class="glyphicon glyphicon-plus"></span>
+                    </button> 
+                </td>
+            </tr>
+        }
+    }
+
+</table>
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")    
+}

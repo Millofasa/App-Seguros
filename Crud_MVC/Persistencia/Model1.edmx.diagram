@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="38ab2fa4ebb84d5d9618e26c631ff347" Name="Diagram1">
+        <EntityTypeShape EntityType="SegurosModel.Asesor" Width="1.5" PointX="0.75" PointY="4" IsExpanded="true" />
+        <EntityTypeShape EntityType="SegurosModel.Cliente" Width="1.5" PointX="0.75" PointY="7" IsExpanded="true" />
+        <EntityTypeShape EntityType="SegurosModel.Compania" Width="1.5" PointX="0.75" PointY="1" IsExpanded="true" />
+        <EntityTypeShape EntityType="SegurosModel.EstadoVenta" Width="1.5" PointX="0.75" PointY="9.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SegurosModel.ItemProducto" Width="1.5" PointX="5.25" PointY="3.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="SegurosModel.Producto" Width="1.5" PointX="3" PointY="3.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="SegurosModel.sysdiagrams" Width="1.5" PointX="5.75" PointY="7" IsExpanded="true" />
+        <EntityTypeShape EntityType="SegurosModel.TipoItem" Width="1.5" PointX="3" PointY="1" IsExpanded="true" />
+        <EntityTypeShape EntityType="SegurosModel.Venta" Width="1.5" PointX="3" PointY="7.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="SegurosModel.VentaProducto" Width="1.5" PointX="5.25" PointY="0.75" IsExpanded="true" />
+        <AssociationConnector Association="SegurosModel.FK_Producto_Asesor" ManuallyRouted="false" />
+        <AssociationConnector Association="SegurosModel.FK_Venta_Cliente" ManuallyRouted="false" />
+        <AssociationConnector Association="SegurosModel.FK_Producto_Compania" ManuallyRouted="false" />
+        <AssociationConnector Association="SegurosModel.FK_Venta_EstadoVenta" ManuallyRouted="false" />
+        <AssociationConnector Association="SegurosModel.FK_ItemProducto_Producto" ManuallyRouted="false" />
+        <AssociationConnector Association="SegurosModel.FK_ItemProducto_TipoItem" ManuallyRouted="false" />
+        <AssociationConnector Association="SegurosModel.FK_VentaProducto_Producto" ManuallyRouted="false" />
+        <AssociationConnector Association="SegurosModel.FK_VentaProducto_Venta" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="SegurosModel.V_ListaProductos" Width="1.5" PointX="7.375" PointY="0.75" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

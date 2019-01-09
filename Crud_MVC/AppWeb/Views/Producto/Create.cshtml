@@ -1,0 +1,90 @@
+﻿@model Entidades.Producto
+
+@{
+    ViewBag.Title = "Crear Producto";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Crear Productos</h2>
+
+
+@using (Html.BeginForm("CreateProduct", "Producto"))
+{
+    @Html.AntiForgeryToken()
+
+    @Html.Hidden("Asesor")
+    @Html.Hidden("Compania")
+    @Html.Hidden("TipoItem")
+
+    <div class="form-horizontal">
+        <h4>Producto</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Nombre, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-4">
+                @Html.EditorFor(model => model.Nombre, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Nombre, "", new { @class = "text-danger" })
+            </div>
+
+            <label class="control-label col-md-2">Descripción</label>
+            <div class="col-md-4">
+                @Html.EditorFor(model => model.Descripcion, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Descripcion, "", new { @class = "text-danger" })
+            </div>
+
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-2">Asesor</label>
+            <div class="col-md-4">                
+                @{Html.RenderAction("ddlLstAsesor", "Asesor");}
+            </div>
+
+            <label class="control-label col-md-2">Compañia</label>
+            <div class="col-md-4">               
+                @{Html.RenderAction("ddlLstCompania", "Compania");}
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Crear Producto" class="btn btn-default" />
+            </div>
+        </div>
+        <hr>
+    </div>
+}
+
+<div id="PopUpItemProducto" tabindex="-1" role="dialog" title="Agregar Items de Productos.">
+    <!-- Modal content-->
+    <div class="modal-dialog modal-lg">
+
+        <div class="form-group">
+            <label class="control-label col-md-2">Descripción</label>
+            <div class="col-md-4">
+                @Html.TextBox("TxtDescripcion", null, new { @class = "form-control", @title = "Ingrese una descripción para este item " })
+            </div>
+            <label class="control-label col-md-2">Tipo de Item</label>
+            <div class="col-md-4">
+                @{Html.RenderAction("ddlLstTipoItem", "TipoItem");}
+            </div>
+        </div>
+    </div>
+</div>
+
+    @*listar los productos*@
+    <div class="alert-success"><p>@ViewBag.Message</p></div>
+    <div>
+        @{Html.RenderAction("LstProductos", "Producto");}
+    </div>
+
+    @section Scripts {
+        @Scripts.Render("~/bundles/jqueryval")
+        <script src="~/Scripts/Seguros/Producto.js"></script>
+        <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+        <link rel="stylesheet" href="/resources/demos/style.css">
+        <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    }
